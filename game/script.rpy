@@ -40,7 +40,6 @@ image bg escena18 = "masia.jpg"
 image bg escena19 = "carrerd.JPG"
 image bg escena20 = "bosc.JPG"
 image bg escena21 = "fabrica.png"
-image bg rierol = "rierol.jpg"
 # imatges interiors
 image bg metge = "biblioteca.png"
 
@@ -59,11 +58,9 @@ image laura normal = "laura1.png"
 image vigilant normal ="vigilant2.png"
 image vigilant adormit ="vigilant1.png"
 image foraster normal = "desconegut2.png"
-image peix:
-    "peix.png"
-    xalign -0.1 yalign 0.15
-    linear 300.0 xalign 1.1  
-    
+image fruitera normal = "fruitera.png"
+image taula = "taula.jpeg"
+
 # Declare characters used by this game.
 define j = Character('Jugador', color="#c3c3c3")
 define n = Character('Neus', color="#c8ffc8", window_left_padding=160, show_side_image=Image("eileen_side.png", xalign=0.0, yalign=1.0))
@@ -74,6 +71,7 @@ define d = Character("Desconegut", color="#c8ffc8", window_left_padding=160, sho
 define f = Character("Foraster", color="#c8ffc8", window_left_padding=160, show_side_image=Image("desconegut2_side.png", xalign=0.0, yalign=1.0))
 define l = Character("Laura", color="#c8ffc8", window_left_padding=160, show_side_image=Image("noia_side.png", xalign=0.0, yalign=1.0))
 define v = Character("Vigilant", color="#c8c8c8", window_left_padding=160, show_side_image=Image("vigilant_side.png", xalign=0.0, yalign=1.0))
+define s = Character("Fruitera", color="#c8c8c8", window_left_padding=160, show_side_image=Image("fruitera_side.png", xalign=0.0, yalign=1.0))
 
 # The game starts here.
 label start:
@@ -102,7 +100,10 @@ label start:
     $ inventari_allowed = True
     $ galleda_allowed = False
     $ diari_allowed = False
+    $ branca_allowed = False
     $ galleda = False
+    $ branca = False
+
     
     call screen buttons
     
@@ -306,12 +307,7 @@ label escena11:
     elif destino == "p":
         n "No hi ha ningú amb qui parlar"
     elif destino == "a":
-        if fase == 11:
-            scene bg rierol
-            show peix
-            with Pause(300.0)
-        else:
-            n "No hi ha res a fer aquí"
+        n "No hi ha res a fer aquí"
     elif destino == "i":
         call inventory
 
@@ -375,6 +371,13 @@ label escena13:
     $ e_allowed = True
     $ o_allowed = True
     
+    if fase == 10:
+        show fruitera normal at left
+        show taula
+        s "Fruita!"
+        s "Es ven fruita!!!"
+        
+        
     call screen buttons
     
     $ destino = _return
@@ -391,7 +394,24 @@ label escena13:
     elif destino == "v":
         n "Hi ha una església"
     elif destino == "p":
-        n "No hi ha ningú amb qui parlar"
+        if fase == 10:
+            menu:
+                "Què saps on puc comprar un llibre d'aritmètica?":
+                    s "Hi ha un libreter ambulant que acaba de passar per Vic i que ha marxat cap a Calldetenes..."
+                    s "Potser si corres encara el pots trobar en el camí del sud"
+                    jump escena13
+                "Quina fruita més maca":
+                    s "Sí, l'he collit aquest matí a nostre hort"
+                    s "Vols comprar quelcom?"
+                    "No, no tinc diners gràcies"
+                    s "I com penses pagar el llibre?"
+                    "No ho se, ja pensarè quelcom..."
+                    s "Molt bé, que tinguis un bon dia!"
+                    jump escena13
+                "Marxo, bon dia...":
+                    s "Bon dia"
+        else:
+            n "No hi ha ningú amb qui parlar"
     elif destino == "a":
         n "No hi ha res a fer aquí"
     elif destino == "d":
@@ -582,7 +602,7 @@ label escena01:
     elif fase == 9:
         show tieta normal
         t "Hola, ets tu!, quant de temps..."
-        t "Mira, avui Joan comença les classes al Seminari, i no trobem el llibre d'aritmètica"
+        t "Mira, avui Joan comença les classes al Seminari, i ens falta el llibre d'aritmètica"
         t "ja sé que sempre t'estic demanant coses, però... ens podries ajudar?"
         $ fase = 10
         hide tieta
@@ -772,8 +792,11 @@ label escena14:
         jump escena12
     elif destino == 'a':
         play sound "cierre_1.mp3"
+        pause 0.5
         play sound "cierre_1.mp3"
+        pause 0.5
         play sound "cierre_1.mp3"
+        pause 0.5
         if fase == 3:
             play sound "porta.mp3"
             scene black
@@ -972,6 +995,10 @@ label escena20:
         scene bg escena20
         with dissolve
         $ e_allowed = True
+        if branca:
+            $ branca_allowed = False
+        else:
+            $ branca_allowed = True
     else:
         scene black
         with fade
@@ -989,8 +1016,10 @@ label escena20:
     $ destino = _return
     
     if destino == "s":
+        $ branca_allowed = False
         jump escena06
     elif destino == "e":
+        $ branca_allowed = False
         jump escena21
     elif destino == "v":
         n "No es veu res"
@@ -1000,6 +1029,11 @@ label escena20:
         n "No hi ha res a fer aquí"
     elif destino == "i":
         call inventory
+    elif destino == "b":
+        play sound "magia.mp3"
+        $ branca = True
+        $ items.append("branca")
+        "Tinc una branca!"
     jump escena20
     
 # Fabrica ============================================================
