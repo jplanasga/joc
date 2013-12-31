@@ -898,13 +898,13 @@ label escena17:
     elif destino == "v":
         n "No es veu res"
     elif destino == "p":
-        if fase == 10:
+        if fase == 11:
             f "Bon dia"
             menu:
                 "Bon dia!":
                     jump escena17
                 "No serà un llibre d'aritmètica el que porta sota el braç?":
-                    $ fase = 11
+                    $ fase = 12
                     f "Efectivament, com ho saps?"
                     f "si el vols el puc canviar per qualsevol cosa per menjar"
                     f "tinc gana"
@@ -914,6 +914,9 @@ label escena17:
                     jump escena17
                 "No res...":
                     jump escena17
+        elif fase == 12:
+                f "Si no em portes un peix no hi ha tracte!"
+                jump escena17
         else:
             n "No hi ha ningú amb qui parlar"
     elif destino == "a":
@@ -945,7 +948,7 @@ label escena18:
     elif destino == "v":
         n "Hi ha una masia"
     elif destino == "p":
-        n "No hi ha ningú amb qui parlar"
+        l "Hola"
     elif destino == "a":
         n "No hi ha res a fer aquí"
     elif destino == "i":

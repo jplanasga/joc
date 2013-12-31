@@ -2,12 +2,8 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 309: reached end of line when expecting ':'.
-    if fase == 11
-                 ^
-
-File "game/script.rpy", line 312: expected statement.
-    else:
-        ^
+File "game/navegacio.rpy", line 3: expected statement.
+    n ($fase)
+             ^
 
 Ren'Py Version: Ren'Py 6.16.3.502

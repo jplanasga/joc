@@ -1,55 +1,64 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 980, in script
-  File "game/screens.rpy", line 26, in python
-Exception: Color string must be 3, 4, 6, or 8 hex digits long.
+  File "game/script.rpy", line 377, in script
+IOError: Couldn't find file 'fruitera.png'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "/Applications/renpy-6.15.7-sdk/renpy/execution.py", line 288, in run
+  File "/Applications/renpy-6.16.3-sdk/renpy/execution.py", line 288, in run
     node.execute()
-  File "/Applications/renpy-6.15.7-sdk/renpy/ast.py", line 453, in execute
+  File "/Applications/renpy-6.16.3-sdk/renpy/ast.py", line 455, in execute
     renpy.exports.say(who, what, interact=self.interact)
-  File "/Applications/renpy-6.15.7-sdk/renpy/exports.py", line 757, in say
+  File "/Applications/renpy-6.16.3-sdk/renpy/exports.py", line 803, in say
     who(what, interact=interact)
-  File "/Applications/renpy-6.15.7-sdk/renpy/character.py", line 795, in __call__
+  File "/Applications/renpy-6.16.3-sdk/renpy/character.py", line 807, in __call__
     self.do_display(who, what, cb_args=self.cb_args, **display_args)
-  File "/Applications/renpy-6.15.7-sdk/renpy/character.py", line 671, in do_display
+  File "/Applications/renpy-6.16.3-sdk/renpy/character.py", line 673, in do_display
     **display_args)
-  File "/Applications/renpy-6.15.7-sdk/renpy/character.py", line 450, in display_say
-    what_text = show_function(who, what_string)
-  File "/Applications/renpy-6.15.7-sdk/renpy/character.py", line 655, in do_show
-    **self.show_args)
-  File "/Applications/renpy-6.15.7-sdk/renpy/character.py", line 263, in show_display_say
-    return renpy.display.screen.get_widget(screen, "what")
-  File "/Applications/renpy-6.15.7-sdk/renpy/display/screen.py", line 620, in get_widget
-    screen.update()
-  File "/Applications/renpy-6.15.7-sdk/renpy/display/screen.py", line 266, in update
-    self.screen.function(**self.scope)
-  File "/Applications/renpy-6.15.7-sdk/renpy/screenlang.py", line 1217, in __call__
-    renpy.python.py_exec_bytecode(self.code.bytecode, locals=scope)
-  File "/Applications/renpy-6.15.7-sdk/renpy/python.py", line 1297, in py_exec_bytecode
-    exec bytecode in globals, locals
-  File "game/screens.rpy", line 26, in <module>
-    text who id "who"
-  File "/Applications/renpy-6.15.7-sdk/renpy/ui.py", line 448, in __call__
-    w = self.function(*args, **keyword)
-  File "/Applications/renpy-6.15.7-sdk/renpy/text/text.py", line 1097, in __init__
-    super(Text, self).__init__(**properties)
-  File "/Applications/renpy-6.15.7-sdk/renpy/display/core.py", line 131, in __init__
-    self.style = renpy.style.Style(style, properties, heavy=True)
-  File "/Applications/renpy-6.15.7-sdk/renpy/style.py", line 837, in __init__
-    build_style(self)
-  File "/Applications/renpy-6.15.7-sdk/renpy/style.py", line 646, in build_style
-    my_updates.extend(expand_properties(p))
-  File "/Applications/renpy-6.15.7-sdk/renpy/style.py", line 531, in expand_properties
-    newval = func(val)
-  File "/Applications/renpy-6.15.7-sdk/renpy/easy.py", line 65, in color
-    raise Exception("Color string must be 3, 4, 6, or 8 hex digits long.")
-Exception: Color string must be 3, 4, 6, or 8 hex digits long.
+  File "/Applications/renpy-6.16.3-sdk/renpy/character.py", line 476, in display_say
+    rv = renpy.ui.interact(mouse='say', type=type, roll_forward=roll_forward)
+  File "/Applications/renpy-6.16.3-sdk/renpy/ui.py", line 237, in interact
+    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/core.py", line 1853, in interact
+    repeat, rv = self.interact_core(preloads=preloads, **kwargs)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/core.py", line 2168, in interact_core
+    self.draw_screen(root_widget, fullscreen_video, (not fullscreen_video) or video_frame_drawn)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/core.py", line 1418, in draw_screen
+    renpy.config.screen_height,
+  File "render.pyx", line 365, in renpy.display.render.render_screen (gen/renpy.display.render.c:4568)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/layout.py", line 521, in render
+    surf = render(child, width, height, cst, cat)
+  File "render.pyx", line 95, in renpy.display.render.render (gen/renpy.display.render.c:2291)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/layout.py", line 521, in render
+    surf = render(child, width, height, cst, cat)
+  File "render.pyx", line 95, in renpy.display.render.render (gen/renpy.display.render.c:2291)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/layout.py", line 521, in render
+    surf = render(child, width, height, cst, cat)
+  File "render.pyx", line 95, in renpy.display.render.render (gen/renpy.display.render.c:2291)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "accelerator.pyx", line 109, in renpy.display.accelerator.transform_render (gen/renpy.display.accelerator.c:1298)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/image.py", line 164, in render
+    return wrap_render(self.target, width, height, st, at)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/image.py", line 54, in wrap_render
+    rend = render(child, w, h, st, at)
+  File "render.pyx", line 95, in renpy.display.render.render (gen/renpy.display.render.c:2291)
+  File "render.pyx", line 166, in renpy.display.render.render (gen/renpy.display.render.c:2033)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/im.py", line 463, in render
+    im = cache.get(self)
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/im.py", line 196, in get
+    surf = image.load()
+  File "/Applications/renpy-6.16.3-sdk/renpy/display/im.py", line 507, in load
+    surf = renpy.display.pgrender.load_image(renpy.loader.load(self.filename), self.filename)
+  File "/Applications/renpy-6.16.3-sdk/renpy/loader.py", line 428, in load
+    raise IOError("Couldn't find file '%s'." % name)
+IOError: Couldn't find file 'fruitera.png'.
 
-Darwin-11.4.2-i386-64bit
-Ren'Py 6.15.7.374
+Darwin-13.0.0-x86_64-i386-64bit
+Ren'Py 6.16.3.502
 A Ren'Py Game 0.0

@@ -1,5 +1,6 @@
 label inventory:
     $ objectes = len(items)
+    n "Et trobes a la fase: [fase]"
     if objectes == 0:
         n "No tens res"
     else:

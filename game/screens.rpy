@@ -612,3 +612,9 @@ screen buttons:
                 idle "diari.jpg"
                 hover "diari2.jpg"
                 action Return("d")
+    if branca_allowed:
+        vbox xalign 0.8 yalign 0.8:
+            imagebutton:
+                idle "branca.png"
+                hover "branca_on.png"
+                action Return("b")
