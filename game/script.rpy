@@ -17,6 +17,7 @@ image bg boira13 = "IMG_0595.JPG"
 image bg boira07 = "IMG_0592.JPG"
 image bg boira06 = "IMG_0596.JPG"
 image bg boira14 = "casa_metge.JPG"
+image bg boira15 = "placa_nit.jpg"
 image bg boira16 = "monte_nit.JPG"
 image bg boira19 = "carrern.JPG"
 # imatges de dia
@@ -31,17 +32,19 @@ image bg escena08 = "imatge10.jpg"
 image bg escena09 = "imatge11.jpg"
 image bg escena10 = "imatge05.jpg"
 image bg escena11 = "imatge04_dia.JPG"
-image bg escena12 = "imatge15.jpg"
+image bg escena12 = "templo.jpg"
 image bg escena13 = "imatge12.jpg"
 image bg escena14 = "imatge16.jpg"
+image bg escena15 = "placa.jpg"
 image bg escena16 = "monte_dia.JPG"
 image bg escena17 = "bosc2.JPG"
-image bg escena18 = "masia.jpg"
+image bg escena18 = "masia2.jpg"
 image bg escena19 = "carrerd.JPG"
 image bg escena20 = "bosc.JPG"
 image bg escena21 = "fabrica.png"
 # imatges interiors
 image bg metge = "biblioteca.png"
+image bg palau = "despatx.png"
 
 image eileen normal ="eileen_happy.png"
 image llave = "llave.png"
@@ -59,7 +62,12 @@ image vigilant normal ="vigilant2.png"
 image vigilant adormit ="vigilant1.png"
 image foraster normal = "desconegut2.png"
 image fruitera normal = "fruitera.png"
+image secretaria normal = "secretaria.png"
 image taula = "taula.jpeg"
+image nen = "nen.png"
+image valla = "valla.png"
+image peix = "fish.png"
+image joan petit = "joan_petit.png"
 
 # Declare characters used by this game.
 define j = Character('Jugador', color="#c3c3c3")
@@ -72,6 +80,8 @@ define f = Character("Foraster", color="#c8ffc8", window_left_padding=160, show_
 define l = Character("Laura", color="#c8ffc8", window_left_padding=160, show_side_image=Image("noia_side.png", xalign=0.0, yalign=1.0))
 define v = Character("Vigilant", color="#c8c8c8", window_left_padding=160, show_side_image=Image("vigilant_side.png", xalign=0.0, yalign=1.0))
 define s = Character("Fruitera", color="#c8c8c8", window_left_padding=160, show_side_image=Image("fruitera_side.png", xalign=0.0, yalign=1.0))
+define e = Character("Nen", color="#c8c8c8", window_left_padding=160, show_side_image=Image("nen_side.png", xalign=0.0, yalign=1.0))
+define x = Character("Secretaria", color="#c8c8c8", window_left_padding=160, show_side_image=Image("secretaria_side.png", xalign=0.0, yalign=1.0))
 
 # The game starts here.
 label start:
@@ -94,6 +104,8 @@ label start:
     $ s_allowed = True
     $ e_allowed = False
     $ o_allowed = False
+    $ t_allowed = False
+    $ porta_allowed = False
     $ veure_allowed = True
     $ agafar_allowed = True
     $ parlar_allowed = True
@@ -134,16 +146,20 @@ label escena04:
     $ s_allowed = True
     $ e_allowed = False
     $ o_allowed = True
+    $ porta_allowed = True
     
     call screen buttons
     
     $ destino = _return
     
     if destino == "n":
+        $ porta_allowed = False
         jump escena02
     elif destino == "s":
+        $ porta_allowed = False
         jump escena11
     elif destino == "o":
+        $ porta_allowed = False
         jump escena19
     elif destino == "v":
         n "Estem al costat d'una plaça"
@@ -151,7 +167,7 @@ label escena04:
         $ renpy.pause(0)
         scene black 
         with Pause(0.5)
-        show inscripcio 
+        show inscripcio at truecenter
         with dissolve
         with Pause(2.0)
     elif destino == "p":
@@ -160,6 +176,9 @@ label escena04:
         n "No hi ha res a fer aquí"
     elif destino == "i":
         call inventory
+    elif destino == "t":
+        $ porta_allowed = False
+        jump escena22
 
     jump escena04
 
@@ -205,7 +224,7 @@ label escena02:
         $ renpy.pause(0)
         scene black 
         with Pause(0.5)
-        show pila
+        show pila at truecenter
         with dissolve
         with Pause(2.0)
     elif destino == "p":
@@ -221,7 +240,7 @@ label escena02:
                 $ fase = 8
                 scene black 
                 with Pause(0.5)
-                show bateig
+                show bateig at truecenter
                 with dissolve
                 with Pause(2.0)
                 jump escena11
@@ -241,10 +260,14 @@ label escena12:
     if dia:
         scene bg escena12
         with dissolve
+        show valla
     else:
         scene bg boira12
         with fade
-
+        
+    if fase == 12:
+        show nen behind valla 
+        
     $ n_allowed = True
     $ s_allowed = False
     $ e_allowed = True
@@ -255,7 +278,7 @@ label escena12:
     $ destino = _return
     
     if destino == "n":
-        jump escena14
+        jump escena07
     elif destino == "e":
         jump escena06
     elif destino == "o":
@@ -263,7 +286,25 @@ label escena12:
     elif destino == "v":
         n "Això sembla un temple romà"
     elif destino == "p":
-        n "No hi ha ningú amb qui parlar"
+        if fase == 12:
+            e "Hola"
+            e "Estic super avorrit, estaba jugant a fer volar un estel"
+            e "i s'ha trencat el cordill"
+            menu:
+                "Em pots donar el cordill que et queda?":
+                    e "D'acord"
+                    play sound "magia.mp3"
+                    "Ja tinc un cordil"
+                    "Gràcies!!"
+                    $ fase = 13
+                    $ items.append("cordill")
+                    e "de res, adèu"
+                    show nen at left with move
+                    hide nen
+                "No res":
+                    jump escena12
+        else:  
+            n "No hi ha ningú amb qui parlar"
     elif destino == "a":
         n "No hi ha res a fer aquí"
     elif destino == "i":
@@ -307,7 +348,24 @@ label escena11:
     elif destino == "p":
         n "No hi ha ningú amb qui parlar"
     elif destino == "a":
-        n "No hi ha res a fer aquí"
+        if "branca" in items and "cordill" in items and "clip" in items and "poma" in items:
+            "Amb el clip fas un ham..."
+            "li lligues el cordill..."
+            "lligues el cordill a la branca..."
+            "poses una mica de poma en el clip..."
+            "Ep! ja tens una canya de pescar!"
+            "Anem a pescar una mica..."
+            play sound "magia.mp3"
+            "Ja tinc un Peix!"
+            $ renpy.pause(0)
+            scene black 
+            with Pause(0.5)
+            show peix at truecenter
+            with dissolve
+            with Pause(2.0)
+            $ items.append("peix")
+        else:
+            n "De moment no hi ha res a fer aquí"
     elif destino == "i":
         call inventory
 
@@ -371,20 +429,13 @@ label escena13:
     $ e_allowed = True
     $ o_allowed = True
     
-    if fase == 10:
-        show fruitera normal at left
-        show taula
-        s "Fruita!"
-        s "Es ven fruita!!!"
-        
-        
     call screen buttons
     
     $ destino = _return
     
     if destino == "n":
         $ diari_allowed = False
-        jump escena07
+        jump escena14
     elif destino == "e":
         $ diari_allowed = False
         jump escena12
@@ -394,27 +445,11 @@ label escena13:
     elif destino == "v":
         n "Hi ha una església"
     elif destino == "p":
-        if fase == 10:
-            menu:
-                "Què saps on puc comprar un llibre d'aritmètica?":
-                    s "Hi ha un libreter ambulant que acaba de passar per Vic i que ha marxat cap a Calldetenes..."
-                    s "Potser si corres encara el pots trobar en el camí del sud"
-                    jump escena13
-                "Quina fruita més maca":
-                    s "Sí, l'he collit aquest matí a nostre hort"
-                    s "Vols comprar quelcom?"
-                    "No, no tinc diners gràcies"
-                    s "I com penses pagar el llibre?"
-                    "No ho se, ja pensarè quelcom..."
-                    s "Molt bé, que tinguis un bon dia!"
-                    jump escena13
-                "Marxo, bon dia...":
-                    s "Bon dia"
-        else:
-            n "No hi ha ningú amb qui parlar"
+        n "No hi ha ningú amb qui parlar"
     elif destino == "a":
         n "No hi ha res a fer aquí"
     elif destino == "d":
+        play sound "magia.mp3"
         n "Tens un diari d'avui"
         $ items.append("diari")
     elif destino == "i":
@@ -442,11 +477,11 @@ label escena07:
     $ destino = _return
     
     if destino == "o":
-        jump escena05
-    elif destino == "s":
-        jump escena13
-    elif destino == "e":
         jump escena14
+    elif destino == "s":
+        jump escena12
+    elif destino == "e":
+        jump escena20
     elif destino == "v":
         n "Un carrer com tants altres"
     elif destino == "p":
@@ -482,7 +517,7 @@ label escena05:
     $ destino = _return
     
     if destino == "e":
-        jump escena07
+        jump escena14
     elif destino == "o":
         jump escena09
     elif destino == "s":
@@ -501,7 +536,7 @@ label escena05:
         $ renpy.pause(0)
         scene black 
         with Pause(0.5)
-        show fontana 
+        show fontana at truecenter
         with dissolve
         with Pause(2.0)
     elif destino == "p":
@@ -524,7 +559,7 @@ label escena09:
     $ n_allowed = False
     $ s_allowed = True
     $ e_allowed = True
-    $ o_allowed = False
+    $ o_allowed = True
     
     call screen buttons
     
@@ -534,12 +569,14 @@ label escena09:
         jump escena01
     elif destino == "e":
         jump escena05
+    elif destino == "o":
+        jump escena15
     elif destino == "v":
         n "Hi ha una casa amb la imatge d'un Sant i una inscripció"
         $ renpy.pause(0)
         scene black 
         with Pause(0.5)
-        show sant 
+        show sant at truecenter
         with dissolve
         with Pause(2.0)
         jump escena09
@@ -550,6 +587,93 @@ label escena09:
     elif destino == "i":
         call inventory
     jump escena09
+
+# Plaça de Vic ============================================================================
+
+label escena15:
+
+    if dia:
+        scene bg escena15
+        with dissolve
+    else:
+        scene bg boira15
+        with fade
+    
+    if fase == 10:
+        show fruitera normal at left
+        show taula
+        s "Fruita!"
+        s "Es ven fruita!!!"
+    
+    if fase > 10 and not "poma" in items:
+        show fruitera normal at left
+        show taula
+    
+    $ n_allowed = False
+    $ s_allowed = True
+    $ e_allowed = True
+    $ o_allowed = False
+    
+    call screen buttons
+    
+    $ destino = _return
+    
+    if destino == "s":
+        jump escena10
+    elif destino == "e":
+        jump escena09
+    elif destino == "v":
+        n "Una plaça molt gran"
+    elif destino == "p":
+        if fase == 10:
+            menu:
+                "Què saps on puc comprar un llibre d'aritmètica?":
+                    s "Com vens tant tard,ja només quedo jo al mercat"
+                    s "hi ha un libreter ambulant que acaba de passar per Vic i que ha marxat cap a Barcelona..."
+                    s "Potser si corres encara el pots trobar en el camí del sud"
+                    s "Jo estic tancant la paradeta que és hora de dinar"
+                    $ fase = 11
+                    jump escena15
+                "Quina fruita més maca":
+                    s "Sí, l'he collit aquest matí a nostre hort"
+                    s "Vols comprar quelcom?"
+                    "No, no tinc diners gràcies"
+                    s "I com penses pagar el llibre?"
+                    "No ho se, ja pensarè quelcom..."
+                    s "Té, agafa aquesta poma, està una mica tocada i no la puc vendre…"
+                    play sound "magia.mp3"
+                    $ items.append("poma")
+                    "Tinc una poma!"
+                    "Moltes gràcies"
+                    s "De res, que tinguis un bon dia!"
+                    jump escena15
+                "Marxo, bon dia...":
+                    s "Bon dia"
+        elif fase > 10 and not "poma" in items:
+            menu:
+                "Quina fruita més maca":
+                    s "Sí, l'he collit aquest matí a nostre hort"
+                    s "Vols comprar quelcom?"
+                    "No, no tinc diners gràcies"
+                    s "I com penses pagar el llibre?"
+                    "No ho se, ja pensarè quelcom..."
+                    s "Té, agafa aquesta poma, està una mica tocada i no la puc vendre…"
+                    play sound "magia.mp3"
+                    $ items.append("poma")
+                    "Tinc una poma!"
+                    "Moltes gràcies"
+                    s "De res, que tinguis un bon dia!"
+                    jump escena15
+                "Marxo, bon dia...":
+                    s "Bon dia"
+        else:
+            n "No hi ha ningú amb qui parlar"
+    elif destino == "a":
+        n "No hi ha res a fer aquí"
+    elif destino == "i":
+        call inventory
+    jump escena15
+
 
 # Casa on va néixer Joan Collell ============================================================
 
@@ -606,7 +730,17 @@ label escena01:
         t "ja sé que sempre t'estic demanant coses, però... ens podries ajudar?"
         $ fase = 10
         hide tieta
-    
+        
+    elif fase == 14:
+        show tieta normal
+        t "Hola..."
+        t "Veig que has portat el llibre..."
+        t "Moltes gràcies"
+        show joan petit with dissolve
+        
+        $ fase = 15
+        hide tieta
+        
     $ n_allowed = True
     $ s_allowed = True
     $ e_allowed = False
@@ -645,7 +779,7 @@ label escena10:
         
     play sound "zumbido.mp3"
     
-    $ n_allowed = False
+    $ n_allowed = True
     $ s_allowed = False
     $ e_allowed = True
     $ o_allowed = True
@@ -656,6 +790,8 @@ label escena10:
     
     if destino == "o":
         jump escena03
+    elif destino == "n":
+        jump escena15
     elif destino == "e":
         jump escena01
     elif destino == "v":
@@ -705,8 +841,8 @@ label escena03:
                     d "No són hores per passetjar, crec jo..."
                     jump escena03
                 "Estic cercant un metge, és urgent...":
-                    d "El metge viu a l'altra punta de Vic, al final del carrer Nou, al nordest de la església de la Pietat"
-                    d "Piqueu fort a la porta per tal que us obrin."
+                    d "El metge viu a l'altra punta de Vic, al final del carrer Nou, al nord de la església de la Pietat"
+                    d "Piqueu tres cops a la porta per tal que us obrin."
                     $ fase = 3
                     jump escena03
                 "Marxo, bona nit...":
@@ -779,30 +915,36 @@ label escena14:
     
     $ n_allowed = False
     $ s_allowed = True
-    $ e_allowed = False
+    $ e_allowed = True
     $ o_allowed = True
+    $ porta_allowed = True
     
     call screen buttons
     
     $ destino = _return
     
     if destino == "o":
-        jump escena07
+        $ porta_allowed = False
+        jump escena05
     elif destino == "s":
-        jump escena12
-    elif destino == 'a':
+        $ porta_allowed = False
+        jump escena13
+    elif destino == "e":
+        $ porta_allowed = False
+        jump escena07
+    elif destino == 't':
         play sound "cierre_1.mp3"
-        pause 0.5
+        pause 1.5
         play sound "cierre_1.mp3"
-        pause 0.5
+        pause 1.5
         play sound "cierre_1.mp3"
-        pause 0.5
+        pause 1.5
         if fase == 3:
             play sound "porta.mp3"
             scene black
             show text "...uns minuts més tard..." 
             with dissolve
-            with Pause(1.0)
+            with Pause(2.0)
             hide text 
             with dissolve
             scene bg metge with fade
@@ -819,6 +961,13 @@ label escena14:
                     jump escena14
         else:
             n "No contesta ningú"
+    elif destino == 'a':
+        play sound "cierre_1.mp3"
+        pause 1.5
+        play sound "cierre_1.mp3"
+        pause 1.5
+        play sound "cierre_1.mp3"
+        pause 1.5
     elif destino == "v":
         if fase == 3:
             n "Aquesta deu ser la casa que m'ha dit el desconegut"
@@ -880,7 +1029,7 @@ label escena17:
         
     play sound "zumbido.mp3"
     
-    if fase == 10:
+    if fase > 10 and fase < 14:
         show foraster normal
     
     $ n_allowed = True
@@ -903,9 +1052,9 @@ label escena17:
             menu:
                 "Bon dia!":
                     jump escena17
-                "No serà un llibre d'aritmètica el que porta sota el braç?":
+                "Necessito un llibre d'aritmètica!":
                     $ fase = 12
-                    f "Efectivament, com ho saps?"
+                    f "Tens sort, tinc un que et pot servir"
                     f "si el vols el puc canviar per qualsevol cosa per menjar"
                     f "tinc gana"
                     f "saps què? em ve de gust peix..."
@@ -914,7 +1063,17 @@ label escena17:
                     jump escena17
                 "No res...":
                     jump escena17
-        elif fase == 12:
+        elif fase > 11 and fase < 14:
+            if "peix" in items:
+                f "Quin peix mes maco, ara el faré a la brassa"
+                f "aquí tens el llibre que et vaig prometre..."
+                play sound "magia.mp3"
+                $ items.remove("peix")
+                $ items.append("llibre")
+                "Tinc el llibre d'aritmètica!"
+                "Moltes gràcies"
+                $ fase = 14
+            else:
                 f "Si no em portes un peix no hi ha tracte!"
                 jump escena17
         else:
@@ -1006,13 +1165,14 @@ label escena20:
         scene black
         with fade
         $ e_allowed = False
+        play sound "zumbido.mp3"
         n "Per aquí no podem seguir, no es veu res"
         
     play sound "zumbido.mp3"
     
     $ n_allowed = False
     $ s_allowed = True
-    $ o_allowed = False
+    $ o_allowed = True
     
     call screen buttons
     
@@ -1024,6 +1184,9 @@ label escena20:
     elif destino == "e":
         $ branca_allowed = False
         jump escena21
+    elif destino == "o":
+        $ branca_allowed = False
+        jump escena07
     elif destino == "v":
         n "No es veu res"
     elif destino == "p":
@@ -1074,3 +1237,51 @@ label final:
     n "molt bé!"
 
     return
+    
+# Dins del Palau =====================================================================
+
+label escena22:
+
+    scene bg palau
+    with fade
+    
+    show secretaria normal at right
+    
+    $ n_allowed = False
+    $ s_allowed = True
+    $ e_allowed = False
+    $ o_allowed = False
+    $ porta_allowed = False
+    
+    call screen buttons
+    
+    $ destino = _return
+        
+    if destino == "s":
+        jump escena04
+    elif destino == "v":
+        n "Estem al despatx del Palau Episcopal..."
+    elif destino == "p":
+        x "Hola, que vol?"
+        menu:
+            "Puc parlar amb el Bisbe?":
+                x "No, el Bisbe ha sortit"
+                jump escena22
+            "Em pot donar un clip?":
+                x "Sí, aquí tens un ..."
+                play sound "magia.mp3"
+                $ items.append("clip")
+                "Tinc un clip!"
+                x "Mai hagués pensat que un clip pogués fer tant feliç a algú!"
+                "Gracies"
+                x "de res."
+                jump escena17
+            "No res...":
+                jump escena22
+    elif destino == "a":
+        n "No hi ha res a fer aquí"
+    elif destino == "i":
+        call inventory
+
+    jump escena22
+

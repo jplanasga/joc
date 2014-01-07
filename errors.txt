@@ -2,8 +2,8 @@
 errors listed below, and try again.
 
 
-File "game/navegacio.rpy", line 3: expected statement.
-    n ($fase)
-             ^
+File "game/script.rpy", line 1065: expected ':' not found.
+    else
+        ^
 
 Ren'Py Version: Ren'Py 6.16.3.502
