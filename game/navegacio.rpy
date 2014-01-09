@@ -21,3 +21,51 @@ label inventory:
         if "llibre" in items:
             n "Tens un llibre"
 return
+
+label badge:
+    play sound "magia.mp3"
+    scene black
+    show text "Has guanyat una medalla!" 
+    with dissolve
+    with Pause(1.0)
+    hide text 
+    with dissolve
+    scene black 
+    with Pause(0.5)
+    if fase == 6:
+        show aprenent at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 8:
+        show ajudant at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 15:
+        show assessor at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 18:
+        show jugador at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 22:
+        show professional at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 30:
+        show expert at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 38:
+        show mestre at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 43:
+        show geni at truecenter 
+        with dissolve 
+        with Pause(3.0)
+    elif fase == 50:
+        show guru at truecenter 
+        with dissolve 
+        with Pause(3.0)
+return

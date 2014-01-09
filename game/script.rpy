@@ -45,7 +45,7 @@ image bg escena21 = "fabrica.png"
 # imatges interiors
 image bg metge = "biblioteca.png"
 image bg palau = "despatx.png"
-
+image bg seminari = "seminari_interior1.jpg"
 image eileen normal ="eileen_happy.png"
 image llave = "llave.png"
 image alicia normal = "noia.png"
@@ -68,6 +68,19 @@ image nen = "nen.png"
 image valla = "valla.png"
 image peix = "fish.png"
 image joan petit = "joan_petit.png"
+image ingres_seminari = "joan_seminari.jpg"
+image mestre normal = "mestre.png"
+
+# badges
+image aprenent = "aprenent.png"
+image ajudant = "ajudant.png"
+image assessor = "assessor.png"
+image jugador = "jugador.png"
+image professional = "professional.png"
+image expert = "expert.png"
+image mestre = "gran_mestre.png"
+image geni = "geni.png"
+image guru = "guru.png"
 
 # Declare characters used by this game.
 define j = Character('Jugador', color="#c3c3c3")
@@ -82,6 +95,7 @@ define v = Character("Vigilant", color="#c8c8c8", window_left_padding=160, show_
 define s = Character("Fruitera", color="#c8c8c8", window_left_padding=160, show_side_image=Image("fruitera_side.png", xalign=0.0, yalign=1.0))
 define e = Character("Nen", color="#c8c8c8", window_left_padding=160, show_side_image=Image("nen_side.png", xalign=0.0, yalign=1.0))
 define x = Character("Secretaria", color="#c8c8c8", window_left_padding=160, show_side_image=Image("secretaria_side.png", xalign=0.0, yalign=1.0))
+define r = Character("Mestre", color="#c8c8c8", window_left_padding=160, show_side_image=Image("mestre_side.png", xalign=0.0, yalign=1.0))
 
 # The game starts here.
 label start:
@@ -243,6 +257,7 @@ label escena02:
                 show bateig at truecenter
                 with dissolve
                 with Pause(2.0)
+                call badge
                 jump escena11
             else:
                 t "Prova de trobar un diari..."
@@ -294,7 +309,7 @@ label escena12:
                 "Em pots donar el cordill que et queda?":
                     e "D'acord"
                     play sound "magia.mp3"
-                    "Ja tinc un cordil"
+                    "Ja tinc un cordill"
                     "Gràcies!!"
                     $ fase = 13
                     $ items.append("cordill")
@@ -334,6 +349,14 @@ label escena11:
         n "ves a casa seva i descobreix perquè"
         hide eileen
         $ fase = 9
+        
+    elif fase == 15:
+        show eileen normal
+        n "Han pasat 14 anys i Joan ha acabat els seus estudis al Seminari"
+        n "Avui l'ordenen sacerdot i vol que hi siguis present"
+        n "ves al Palau Episcopal"
+        hide eileen
+        $ fase = 16
         
     call screen buttons
     
@@ -712,6 +735,7 @@ label escena01:
         m "Ha tingut un nen!!"
         t "t'esperem demà al bateig a la catedral!"
         t "fins demà..."
+        call badge
         hide tieta
         hide metge
         scene black
@@ -730,16 +754,28 @@ label escena01:
         t "ja sé que sempre t'estic demanant coses, però... ens podries ajudar?"
         $ fase = 10
         hide tieta
-        
     elif fase == 14:
         show tieta normal
         t "Hola..."
         t "Veig que has portat el llibre..."
         t "Moltes gràcies"
-        show joan petit with dissolve
-        
         $ fase = 15
         hide tieta
+        scene black
+        show text "...al dia següent..." 
+        with dissolve
+        with Pause(1.0)
+        hide text 
+        with dissolve
+        scene black 
+        with Pause(0.5)
+        show ingres_seminari at truecenter
+        with dissolve
+        with Pause(2.0)
+        call badge
+        jump escena01
+        
+        
         
     $ n_allowed = True
     $ s_allowed = True
@@ -783,16 +819,20 @@ label escena10:
     $ s_allowed = False
     $ e_allowed = True
     $ o_allowed = True
+    $ porta_allowed = True
     
     call screen buttons
     
     $ destino = _return
     
     if destino == "o":
+        $ porta_allowed = False
         jump escena03
     elif destino == "n":
+        $ porta_allowed = False
         jump escena15
     elif destino == "e":
+        $ porta_allowed = False
         jump escena01
     elif destino == "v":
         n "Un carrer estret..."
@@ -802,6 +842,11 @@ label escena10:
         n "No hi ha res a fer aquí"
     elif destino == "i":
         call inventory
+    elif destino == "t":
+        if fase == 16:
+            jump escena23
+        else:
+            n "La porta esa tancada"
     jump escena10
 
 # Capella del Seminari =============================================================================================
@@ -1262,22 +1307,33 @@ label escena22:
     elif destino == "v":
         n "Estem al despatx del Palau Episcopal..."
     elif destino == "p":
-        x "Hola, que vol?"
-        menu:
-            "Puc parlar amb el Bisbe?":
-                x "No, el Bisbe ha sortit"
-                jump escena22
-            "Em pot donar un clip?":
-                x "Sí, aquí tens un ..."
-                play sound "magia.mp3"
-                $ items.append("clip")
-                "Tinc un clip!"
-                x "Mai hagués pensat que un clip pogués fer tant feliç a algú!"
-                "Gracies"
-                x "de res."
-                jump escena17
-            "No res...":
-                jump escena22
+        if not "clip" in items:
+            x "Hola, que vol?"
+            menu:
+                "Puc parlar amb el Bisbe?":
+                    x "No, el Bisbe ha sortit"
+                    jump escena22
+                "Em pot donar un clip?":
+                    x "Sí, aquí tens un ..."
+                    play sound "magia.mp3"
+                    $ items.append("clip")
+                    "Tinc un clip!"
+                    x "Mai hagués pensat que un clip pogués fer tant feliç a algú!"
+                    "Gracies"
+                    x "de res."
+                    jump escena22
+                "No res...":
+                    jump escena22
+        if fase == 16:
+            "Hola, vinc a l'ordenació de Joan Collell"
+            x "No pot passar sense una invitació del Bisbe"
+            "On puc trobar el Bisbe?"
+            x "A dins. Però no pot passar sense invitació"
+            "Com puc aconseguir una invitació?"
+            x "Potser algun amic de Joan Collell li pot proporcionar una"
+            "Gracies"
+            x "de res."
+            jump escena22   
     elif destino == "a":
         n "No hi ha res a fer aquí"
     elif destino == "i":
@@ -1285,3 +1341,39 @@ label escena22:
 
     jump escena22
 
+# Dins del Seminari =====================================================================
+
+label escena23:
+
+    scene bg seminari
+    with fade
+    
+    show mestre normal at right
+    
+    $ n_allowed = False
+    $ s_allowed = True
+    $ e_allowed = False
+    $ o_allowed = False
+    $ porta_allowed = False
+    
+    call screen buttons
+    
+    $ destino = _return
+        
+    if destino == "s":
+        jump escena10
+    elif destino == "v":
+        n "Estem al dins del seminari..."
+    elif destino == "p":
+        if not "invitació" in items:
+            r "Hola, què puc fer per vosté?"
+            "Tindria una invitació per la ordenació de Joan Collell?"
+            r "Crec que encara em queda alguna..."
+        else:
+            n "No hi ha res a dir"
+    elif destino == "a":
+        n "No hi ha res a fer aquí"
+    elif destino == "i":
+        call inventory
+
+    jump escena23

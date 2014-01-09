@@ -2,8 +2,40 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 1065: expected ':' not found.
-    else
-        ^
+File "game/navegacio.rpy", line 30: end of line expected.
+    show aprenent at truecenter with dissolve with Pause(3.0)
+                                              ^
+
+File "game/navegacio.rpy", line 32: end of line expected.
+    show ajudant at truecenter with dissolve with Pause(3.0)
+                                             ^
+
+File "game/navegacio.rpy", line 34: end of line expected.
+    show assessor at truecenter with dissolve with Pause(3.0)
+                                              ^
+
+File "game/navegacio.rpy", line 36: end of line expected.
+    show jugador at truecenter with dissolve with Pause(3.0)
+                                             ^
+
+File "game/navegacio.rpy", line 38: end of line expected.
+    show professional at truecenter with dissolve with Pause(3.0)
+                                                  ^
+
+File "game/navegacio.rpy", line 40: end of line expected.
+    show expert at truecenter with dissolve with Pause(3.0)
+                                            ^
+
+File "game/navegacio.rpy", line 42: end of line expected.
+    show mestre at truecenter with dissolve with Pause(3.0)
+                                            ^
+
+File "game/navegacio.rpy", line 44: end of line expected.
+    show geni at truecenter with dissolve with Pause(3.0)
+                                          ^
+
+File "game/navegacio.rpy", line 46: end of line expected.
+    show guru at truecenter with dissolve with Pause(3.0)
+                                          ^
 
 Ren'Py Version: Ren'Py 6.16.3.502
