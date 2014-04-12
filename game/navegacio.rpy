@@ -20,6 +20,8 @@ label inventory:
             n "Tens un peix"
         if "llibre" in items:
             n "Tens un llibre"
+        if "invitacio" in items:
+            n "Tens una invitació"
 return
 
 label badge:

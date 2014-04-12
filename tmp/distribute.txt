@@ -375,6 +375,7 @@ game/vigilant2.png matches ** ([u'all']).
 game/vigilant_side.png matches ** ([u'all']).
 game/zumbido.mp3 matches ** ([u'all']).
 log.txt matches log.txt (None).
+project.json matches project.json (None).
 README.html matches ** ([u'all']).
 tmp/ matches tmp/ (None).
 traceback.txt matches traceback.txt (None).

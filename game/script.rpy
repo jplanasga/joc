@@ -70,6 +70,8 @@ image peix = "fish.png"
 image joan petit = "joan_petit.png"
 image ingres_seminari = "joan_seminari.jpg"
 image mestre normal = "mestre.png"
+image invitacio = "invitacio.jpeg"
+image ordenacio = "ordenacio.JPG"
 
 # badges
 image aprenent = "aprenent.png"
@@ -375,7 +377,7 @@ label escena11:
             "Amb el clip fas un ham..."
             "li lligues el cordill..."
             "lligues el cordill a la branca..."
-            "poses una mica de poma en el clip..."
+            "poses el cuc de la poma en el clip..."
             "Ep! ja tens una canya de pescar!"
             "Anem a pescar una mica..."
             play sound "magia.mp3"
@@ -684,7 +686,9 @@ label escena15:
                     play sound "magia.mp3"
                     $ items.append("poma")
                     "Tinc una poma!"
-                    "Moltes gràcies"
+                    "i té un cuc!!!"
+                    "ahgs, (quin fastic)"
+                    "Aixó.... ups... moltes gràcies!"
                     s "De res, que tinguis un bon dia!"
                     jump escena15
                 "Marxo, bon dia...":
@@ -1335,7 +1339,19 @@ label escena22:
             x "de res."
             jump escena22   
     elif destino == "a":
-        n "No hi ha res a fer aquí"
+            if fase == 17:
+                x "Veig que porta una invitació, pot passar..." 
+                $ renpy.pause(0)
+                scene black 
+                with Pause(0.5)
+                show ordenacio at truecenter
+                with dissolve
+                with Pause(2.0)
+                $ fase = 18
+                call badge
+                jump escena11
+            else:
+                n "No hi ha res a fer aquí"
     elif destino == "i":
         call inventory
 
@@ -1369,6 +1385,22 @@ label escena23:
             r "Hola, què puc fer per vosté?"
             "Tindria una invitació per la ordenació de Joan Collell?"
             r "Crec que encara em queda alguna..."
+            r "un moment..."
+            hide mestre
+            scene black 
+            with Pause(0.5)
+            scene bg seminari
+            show mestre normal
+            play sound "magia.mp3"
+            "Ja tinc una invitació!"
+            $ renpy.pause(0)
+            scene black 
+            with Pause(0.5)
+            show invitacio at truecenter
+            with dissolve
+            with Pause(2.0)
+            $ items.append("invitacio")
+            $ fase = 17
         else:
             n "No hi ha res a dir"
     elif destino == "a":
